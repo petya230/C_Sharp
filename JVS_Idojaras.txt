@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Idõjárás!</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+</head>
+    <body>
+    <select onchange="meh(this)">
+        <option selected="selected" value="Budapest">Budapest</option>
+        <option value="Gyõr">Gyõr</option>
+        <option value="Szigethalom">Szigethalom</option>
+        <option value="Szigetszentmiklós">Szigetszentmiklós</option>
+    </select>
+        <table style="width:25%; border-bottom: 1px solid black">
+                <tr>
+                        <th style="border-right: 2px solid black; width: 50%">
+                            <img id="kep">
+                        </th>
+                        <th style="width: 50%">
+                                <div class="mypanel"></div>
+                            </th>
+                </tr>
+        </table>
+        <script>
+        var API = "21d3ff861f5d0ed5"
+        function meh(varos) { 
+            var varos = varos.value;
+            $.getJSON('http://api.wunderground.com/api/'+ API + '/conditions/lang:HU/q/Hu/'+ varos + '.json', function(data) {
+            
+            var text = `Ország: ${data['current_observation']['display_location']['state_name']}<br>
+                        Város: ${data['current_observation']['display_location']['city']}<br>
+                        Hõmérséklet: ${data['current_observation']['temp_c']} °C<br>
+                        Idõjárás: ${data['current_observation']['weather']}`
+
+            var img = `${data['current_observation']['icon_url']}`
+
+            document.getElementById("kep").src=img
+            $(".mypanel").html(text);
+            });
+        };
+        </script>
+    </body>
+</html>
